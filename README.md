@@ -1,3 +1,7 @@
+---
+author: Christophe Gouel
+---
+
 Teaching modeling with GAMS involves practice. In my master-level class, *Introduction to General Equilibrium Modeling*, I give many exercices to the students, some that they have to do in classes and that I help them with, and some that they have to do between sessions and that they send me for grading. While the part where they work on their own to figure out solutions to their problems is important, receiving before the new class session 20 or more programs that will have to each be run separately to check whether they run as expected was something I dreaded. In this blog post, I will explain how I turn this dreaded work into something that is partly automatized and that can be done very efficiently.
 
 To achieve this, I have been combining [GitHub Classroom](https://classroom.github.com/), [continuous integration workflow in GitHub](https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration), and tools for [developing in the cloud](https://docs.github.com/en/enterprise-cloud@latest/codespaces/developing-in-codespaces).
@@ -21,6 +25,7 @@ If their `gms` file does not compile, instead of a green checkmark (<span style=
 The automatic execution is triggered by having in a repo a Yaml file with the right instructions. Here it is the file [workflow.yml](https://github.com/economic-modeling-master/partial-eq-1-sector/blob/main/.github/workflows/workflow.yml):
 <details>
   <summary>Click for details of `workflow.yml`</summary>
+  
 ```{yaml}
 name: Test model solution with GAMS
 
