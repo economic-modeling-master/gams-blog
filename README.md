@@ -20,7 +20,7 @@ Once all students have committed their solution on their respective repositories
 
 ![My GitHub workflow](github-workflow.gif)
 
-If their `gms` file does not compile, instead of a green checkmark (<span style="color:green">✓</span>) indicating compilation, there is a red cross mark. In this case, I know that I have to go check their code to find the mistake, which I also do in the cloud as explained below.
+If their `gms` file does not compile, instead of a green checkmark (<span style="color:green">✓</span>) indicating compilation, there is a red cross mark (❌). In this case, I know that I have to go check their code to find the mistake, which I also do in the cloud as explained below.
 
 The automatic execution is triggered by having in a repo a Yaml file with the right instructions. Here it is the file [workflow.yml](https://github.com/economic-modeling-master/partial-eq-1-sector/blob/main/.github/workflows/workflow.yml):
 <details>
