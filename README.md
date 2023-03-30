@@ -10,9 +10,9 @@ To make more concrete what I will expose, I have made available in a public repo
 
 # GitHub Classroom
 
-GitHub Classroom is a service provided by GitHub that uses GitHub repositories for 
+GitHub Classroom is a service provided by GitHub that uses GitHub repositories for managing assignments in classes. It is freely available for teachers after proving an academic affiliation.
 
-Using it does not require any knowledge of Git by the students. They can submit their assignments simply by uploading files manually as on any other website, in which case a commit is automatically created. So
+Using it does not require any knowledge of Git by the students, because they can submit their assignments simply by uploading files manually as on any other website, in which case a commit is automatically created. So it is not limited to computer science classes and students skilled enough to learn GAMS can use it without troubles.
 
 # Automatic run of students solutions
 
