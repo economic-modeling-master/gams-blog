@@ -69,7 +69,7 @@ jobs:
 
 # Fixing students errors and making feedbacks
 
-In case of errors in their code, I could download the code to check it and modify it on my computer, but this would add a lot of frictions when having to upload back the corrected version. Instead, I am relying on [Codespaces](https://github.com/features/codespaces) which allows to start a virtual machine in the cloud.
+In case of errors in their code, I could download the code to check it and modify it on my computer, but this would add a lot of frictions when having to upload back the corrected version. Instead, I am relying on [Codespaces](https://github.com/features/codespaces) which allows to start a virtual machine in the cloud. The difference with the previous virtual machine that automatically launched GAMS is that Codespaces provides a persistent machine with an editor (Visual Studio Code for the Web), a terminal to launch GAMS, and a link to the original repo to push back modifications.
 
 GIF of codespaces
 
