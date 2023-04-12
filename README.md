@@ -2,31 +2,33 @@
 author: Christophe Gouel
 ---
 
-Teaching modeling with GAMS involves practice. In my master-level class, *Introduction to General Equilibrium Modeling*, I give many exercices to the students, some that they have to do in classes and that I help them with, and some that they have to do between sessions and that they send me for grading. While the part where they work on their own to figure out solutions to their problems is important, receiving before the new class session 20 or more programs that will have to each be run separately to check whether they run as expected was something I dreaded. In this blog post, I will explain how I turn this dreaded work into something that is partly automatized and that can be done very efficiently.
+Are you ready to transform your GAMS modeling class with modern tools and streamline grading? In this blog post, I'll show you how I have recently adjusted my own workflow.
 
-To achieve this, I have been combining [GitHub Classroom](https://classroom.github.com/), [continuous integration workflow in GitHub](https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration), and tools for [developing in the cloud](https://docs.github.com/en/enterprise-cloud@latest/codespaces/developing-in-codespaces).
+As a teacher of a master-level course on General Equilibrium Modeling, I know the importance of practice for students to master the subject. I give many exercises to students, some of which they do in class with my help, and others they do on their own and submit for grading. However, receiving over 20 programs to check for each session was daunting. In this blog post, I will show you how I turned this dreaded work into a streamlined, efficient process.
 
-To make more concrete what I will expose, I have made available in a public repository the introductory exercise I use in my class and that I will use here as example: <https://github.com/economic-modeling-master/partial-eq-1-sector>.
+To achieve this, I use [GitHub Classroom](https://classroom.github.com/), which is a free service provided by GitHub for teachers to manage assignments using GitHub repositories. I also use [continuous integration workflow in GitHub](https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration) to automatize the execution of GAMS programs, and [cloud-based development tools](https://docs.github.com/en/enterprise-cloud@latest/codespaces/developing-in-codespaces) for providing feedbacks.
+
+To make this concrete, I have created a public repository with an introductory exercise that I use in my class as an example. You can find it here: <https://github.com/economic-modeling-master/partial-eq-1-sector>.
 
 # GitHub Classroom
 
-GitHub Classroom is a service provided by GitHub that uses GitHub repositories for managing assignments in classes. It is freely available for teachers after proving an academic affiliation. For a teacher, GitHub Classroom proposes a dashboard presenting all classes and for each class a dashboard with all the assignments. An assignment is given to students by sending them a link. After clicking on the link and accepting the assignment, a repository is automatically created for them to deposit their solution in it and this repository is copied from a target repo such as [my example](https://github.com/economic-modeling-master/partial-eq-1-sector). Assignments can be done individually or in group, and in the latter case one repo is created per group. Another dashboard allows to see all students repo for a given assignment, as well as to see whether the last commit was done before or after the deadline.
+Using GitHub Classroom, I can manage all assignments and have access to a dashboard that presents each class, assignment, and student repository. When I send out an assignment, students are given a link that creates a repository copied from a target repo for them to submit their solutions. GitHub Classroom makes grading assignments more efficient, as it allows teachers to see all students' repositories for a particular assignment and check whether they have submitted their work before the deadline. Assignments can be done individually or in group, and in the latter case one repo is created per group.
 
-From the students perspective, using GitHub Classroom just requires a GitHub account, but no installation or knowledge of Git. Without using Git, they can submit their assignments simply by uploading files manually as on any other website, in which case a commit is automatically created. So it is not limited to computer science classes and students skilled enough to learn GAMS can use it without troubles.
+From the students' perspective, using GitHub Classroom just requires a GitHub account, but no installation or knowledge of Git. Without using Git, they can submit their assignments simply by uploading files manually as on any other website, in which case a commit is automatically created. So it is not limited to computer science classes and students skilled enough to learn GAMS can use it without trouble.
 
-GitHub Classroom includes features to automatize grading. For example, by running unit tests on students code, but this does not seem adapted to GAMS programs. However, I build on similar tool to automatize the run of students solutions.
+GitHub Classroom includes features to automatize grading. For example, by running unit tests on students code, but this does not seem adapted to GAMS programs. However, I build on similar tool to automatize the run of students' solutions.
 
 # Automatic run of students solutions
 
-Once all students have committed their solution on their respective repositories, I can have a look at what they have done. For this part, I don't want to have to run all their GAMS programs locally. So, I have set up a continuous integration workflow in GitHub: after each commit a virtual machine is launched with a fresh GAMS install that runs all `gms` files present in the repo. After the run, all output files (`gdx`, `log`, and `lst`) are saved in a zip file for me to check as shown in this gif:
+Once all students have committed their solutions to their respective repositories, I use a continuous integration workflow in GitHub to run all their GAMS programs without having to do it manually. After each student commit, a virtual machine is launched with a fresh GAMS install to run all `.gms` files present in the repository. The output files (`gdx`, `log`, and `lst`) are saved in a zip file for me to check as shown in this gif:
 
 ![My GitHub workflow](github-workflow.gif)
 
-If their `gms` file does not compile, instead of a green checkmark (<span style="color:green">✓</span>) indicating compilation, there is a red cross mark (❌). In this case, I know that I have to go check their code to find the mistake, which I can also do in the cloud as explained below.
+If their `gms` file does not compile, instead of a green checkmark (<span style="color:green">✓</span>) indicating compilation, there is a red cross mark (❌). In this case, I know that I have to check their code to find the mistake, which I can also do in the cloud cloud-based development tools.
 
-The automatic execution of GAMS is triggered by having in each repo a Yaml file with the right instructions. Here it is the file [workflow.yml](https://github.com/economic-modeling-master/partial-eq-1-sector/blob/main/.github/workflows/workflow.yml):
+The automatic execution of GAMS is triggered by having a YAML file with the correct instructions in each repository. You can find an example of such a YAML file in [workflow.yml](https://github.com/economic-modeling-master/partial-eq-1-sector/blob/main/.github/workflows/workflow.yml):
 <details>
-  <summary>Click for details of `workflow.yml`</summary>
+  <summary>Click for details of workflow.yml</summary>
   
 ```{yaml}
 name: Test model solution with GAMS
@@ -67,19 +69,19 @@ jobs:
 ```
 </details>
 
-# Fixing students errors and making feedbacks
+# Fixing students errors and providing feedbacks
 
-In case of errors in students code, I try to propose solutions using GitHub Pull Request interface which allows to comment on code line by line. This approach is fine for making small feedbacks when the errors are minor.
+In case of errors in students' code, I use GitHub's Pull Request interface to propose solutions and provide feedbacks. The Pull Request interface allows to comment on code line by line, which is perfect for fixing minor errors.
 
 ![Feedback by pull request](pullrequest-feedback.png)
 
-For more complex errors, it might be necessary to change the code and launch GAMS to check the new solution. I could download the code to modify it on my computer before uploading back the corrected version, but this would add a lot of frictions. Instead, I am relying on [Codespaces](https://github.com/features/codespaces) which allows to start a virtual machine in the cloud. The difference with the previous virtual machine that automatically launched GAMS is that Codespaces provides a persistent machine with an editor (Visual Studio Code for the Web), a terminal to launch GAMS, and a link to the original repo to push back modifications (contrary to what the gif may suggest setting up the codespaces takes about 2 minutes, during which I jump to another project to grade).
+For more complex errors, it might be necessary to change the code and launch GAMS to check the new solution. I could download the code to modify it on my computer before uploading back the corrected version, but this would add a lot of frictions. Instead, I am relying on [Codespaces](https://github.com/features/codespaces) which allows to start a virtual machine in the cloud. The difference with the previous virtual machine that automatically launched GAMS is that Codespaces provides a persistent machine with an editor (Visual Studio Code for the Web), a terminal to launch GAMS, and a link to the original repo to push back modifications (contrary to what the gif below may suggest setting up the codespaces takes about 2 minutes, during which I jump to another project to grade).
 
 ![Editing GAMS files in Codespaces](codespaces.gif)
 
 # How to deal with licensing?
 
-One issue I encountered when developing this approach was GAMS licensing. I will tell you about the solution I adopted, but also about two other possible approaches. My solution is very simple: use GAMS 29.1. Now if you want to try GAMS without buying it, you have to request online a free demo license, but up to GAMS version 29.1 the demo version was shipped with the software and small models could be solved directly after the installation without having to provide a license. For the purpose of this class, where the students have to solve small models and, usually, do not use recently-introduced advanced GAMS features, relying on an old version of GAMS is largely sufficient.
+One issue I encountered when developing this approach was GAMS licensing. I will tell you about the solution I adopted, but also about two other possible approaches. My solution is very simple: use GAMS 29.1. These days if you want to try GAMS without buying it, you have to request online a free demo license, but up to GAMS version 29.1 the demo version was shipped with the software and small models could be solved directly after the installation without having to provide a license. For the purpose of this class, where the students have to solve small models and do not use recently-introduced advanced GAMS features, relying on an old version of GAMS is largely sufficient.
 
 If GAMS 29.1 is not recent enough, it is possible to use a license file. I can see at least two approaches. The first would be to store a license file in each repository of assignments and to move it automatically to where GAMS is installed on the virtual machine. Since, for my class, the repositories for exercises are all private repositories, the license would not been shared outside the class and each year, GAMS provides me with a temporary teaching license for my students. For public projects, storing the license file is not an option. In this case, the license can be stored in a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and copied to GAMS folder after the installation.
 
@@ -88,3 +90,5 @@ If GAMS 29.1 is not recent enough, it is possible to use a license file. I can s
 Even if this setup does not require the students to learn how to use Git, it has the benefit of familiarizing them with modern development tools: GitHub, Markdown, Continuous Integration, and even development in the cloud; all skills that can be useful for modelers in and out of academia.
 
 Another benefit of this approach is that it can be scaled up. Running the class with a hundred students would not be more difficult. It is possible to share the teacher access to GitHub Classroom with TAs that would take care of part of the load.
+
+In conclusion, by using modern tools, you can transform the way you teach GAMS modeling and make grading more efficient and partly automated.
