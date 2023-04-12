@@ -69,7 +69,11 @@ jobs:
 
 # Fixing students errors and making feedbacks
 
-In case of errors in their code, I could download the code to check it and modify it on my computer, but this would add a lot of frictions when having to upload back the corrected version. Instead, I am relying on [Codespaces](https://github.com/features/codespaces) which allows to start a virtual machine in the cloud. The difference with the previous virtual machine that automatically launched GAMS is that Codespaces provides a persistent machine with an editor (Visual Studio Code for the Web), a terminal to launch GAMS, and a link to the original repo to push back modifications.
+In case of errors in students code, I try to propose solutions using GitHub Pull Request interface which allows to comment on code line by line. This approach is fine for making small feedbacks when the errors are minor.
+
+![Feedback by pull request](pullrequest-feedback.png)
+
+For more complex errors, it might be necessary to change the code and launch GAMS to check the new solution. I could download the code to modify it on my computer before uploading back the corrected version, but this would add a lot of frictions. Instead, I am relying on [Codespaces](https://github.com/features/codespaces) which allows to start a virtual machine in the cloud. The difference with the previous virtual machine that automatically launched GAMS is that Codespaces provides a persistent machine with an editor (Visual Studio Code for the Web), a terminal to launch GAMS, and a link to the original repo to push back modifications (contrary to what the gif may suggest setting up the codespaces takes about 2 minutes, during which I jump to another project to grade).
 
 ![Editing GAMS files in Codespaces](codespaces.gif)
 
