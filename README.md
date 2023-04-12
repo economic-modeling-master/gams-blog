@@ -6,7 +6,7 @@ Are you ready to transform your GAMS modeling class with modern tools and stream
 
 As a teacher of a master-level course on General Equilibrium Modeling, I know the importance of practice for students to master the subject. I give many exercises to students, some of which they do in class with my help, and others they do on their own and submit for grading. However, receiving over 20 programs to check for each session was daunting. In this blog post, I will show you how I turned this dreaded work into a streamlined, efficient process.
 
-To achieve this, I use [GitHub Classroom](https://classroom.github.com/), which is a free service provided by GitHub for teachers to manage assignments using GitHub repositories. I also use [continuous integration workflow in GitHub](https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration) to automatize the execution of GAMS programs, and [cloud-based development tools](https://docs.github.com/en/enterprise-cloud@latest/codespaces/developing-in-codespaces) for providing feedbacks.
+To achieve this, I use [GitHub Classroom](https://classroom.github.com/), which is a free service provided by GitHub for teachers to manage assignments using GitHub repositories. I also use [continuous integration workflow in GitHub](https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration) to automatize the execution of GAMS programs and [cloud-based development tools](https://docs.github.com/en/enterprise-cloud@latest/codespaces/developing-in-codespaces) for providing feedbacks.
 
 To make this concrete, I have created a public repository with an introductory exercise that I use in my class as an example. You can find it here: <https://github.com/economic-modeling-master/partial-eq-1-sector>.
 
@@ -24,9 +24,9 @@ Once all students have committed their solutions to their respective repositorie
 
 ![My GitHub workflow](github-workflow.gif)
 
-If their `gms` file does not compile, instead of a green checkmark (<span style="color:green">✓</span>) indicating compilation, there is a red cross mark (❌). In this case, I know that I have to check their code to find the mistake, which I can also do in the cloud cloud-based development tools.
+If their `gms` file does not compile, instead of a green checkmark (<span style="color:green">✓</span>) indicating compilation, there is a red cross mark (❌). In this case, I know that I have to check their code to find the mistake, which I can also do in the cloud using cloud-based development tools.
 
-The automatic execution of GAMS is triggered by having a YAML file with the correct instructions in each repository. You can find an example of such a YAML file in [workflow.yml](https://github.com/economic-modeling-master/partial-eq-1-sector/blob/main/.github/workflows/workflow.yml):
+The automatic execution of GAMS is triggered by having a YAML file with the correct instructions in each repository. You can find an example of such a YAML file in [workflow.yml](https://github.com/economic-modeling-master/partial-eq-1-sector/blob/main/.github/workflows/workflow.yml).
 <details>
   <summary>Click for details of workflow.yml</summary>
   
@@ -89,6 +89,6 @@ If GAMS 29.1 is not recent enough, it is possible to use a license file. I can s
 
 Even if this setup does not require the students to learn how to use Git, it has the benefit of familiarizing them with modern development tools: GitHub, Markdown, Continuous Integration, and even development in the cloud; all skills that can be useful for modelers in and out of academia.
 
-Another benefit of this approach is that it can be scaled up. Running the class with a hundred students would not be more difficult. It is possible to share the teacher access to GitHub Classroom with TAs that would take care of part of the load.
+Another benefit of this approach is that it can be scaled up. Running the class with a hundred students would not be more difficult. It is possible to share the teacher access to GitHub Classroom with teaching assistants who would take care of part of the load.
 
 In conclusion, by using modern tools, you can transform the way you teach GAMS modeling and make grading more efficient and partly automated.
