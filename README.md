@@ -16,7 +16,7 @@ Using GitHub Classroom, I can manage all assignments and have access to a dashbo
 
 From the students' perspective, using GitHub Classroom just requires a GitHub account, but no installation or knowledge of Git. Without using Git, they can submit their assignments simply by uploading files manually as on any other website, in which case a commit is automatically created. So it is not limited to computer science classes and students skilled enough to learn GAMS can use it without trouble.
 
-GitHub Classroom includes features to automatize grading. For example, by running unit tests on students code, but this does not seem adapted to GAMS programs. However, I build on similar tool to automatize the run of students' solutions.
+GitHub Classroom includes features to automatize grading. For example, by running unit tests on students code, but this does not seem adapted to GAMS programs. However, I build on similar tools to automatize the run of students' solutions.
 
 # Automatic run of students solutions
 
@@ -33,31 +33,23 @@ The automatic execution of GAMS is triggered by having a YAML file with the corr
 ```{yaml}
 name: Test model solution with GAMS
 
-env:
-  GAMS_MAJOR: 29
-  GAMS_MINOR: 1
-  GAMS_MAINT: 0
-
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: gams/gams:latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install GAMS
-        run: |
-          cd ~
-          wget -nv https://d37drm4t2jghv5.cloudfront.net/distributions/${GAMS_MAJOR}.${GAMS_MINOR}.${GAMS_MAINT}/linux/linux_x64_64_sfx.exe
-          chmod 755 linux_x64_64_sfx.exe
-          ./linux_x64_64_sfx.exe
-          echo "~/gams${GAMS_MAJOR}.${GAMS_MINOR}_linux_x64_64_sfx" >> $GITHUB_PATH
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Run GAMS
         run: |
+          cd $GITHUB_WORKSPACE
           for gmsfile in *.gms
           do
             gams "${gmsfile}" lo=4 gdx="${gmsfile/.gms/}"
             cat "${gmsfile/gms/lst}"
           done
+        shell: bash
       - name: Archive results
         uses: actions/upload-artifact@v3
         with:
@@ -71,19 +63,19 @@ jobs:
 
 # Fixing students errors and providing feedbacks
 
-In case of errors in students' code, I use GitHub's Pull Request interface to propose solutions and provide feedbacks. The Pull Request interface allows to comment on code line by line, which is perfect for fixing minor errors.
+In case of errors in students' code, I use GitHub's Pull Request interface to propose solutions and provide feedbacks. The Pull Request interface allows me to comment on code line by line, which is perfect for fixing minor errors.
 
 ![Feedback by pull request](pullrequest-feedback.png)
 
-For more complex errors, it might be necessary to change the code and launch GAMS to check the new solution. I could download the code to modify it on my computer before uploading back the corrected version, but this would add a lot of frictions. Instead, I am relying on [Codespaces](https://github.com/features/codespaces) which allows to start a virtual machine in the cloud. The difference with the previous virtual machine that automatically launched GAMS is that Codespaces provides a persistent machine with an editor (Visual Studio Code for the Web), a terminal to launch GAMS, and a link to the original repo to push back modifications (contrary to what the gif below may suggest setting up the codespaces takes about 2 minutes, during which I jump to another project to grade).
+For more complex errors, it might be necessary to change the code and launch GAMS to check the new solution. I could download the code to modify it on my computer before uploading back the corrected version, but this would add a lot of frictions. Instead, I am relying on [Codespaces](https://github.com/features/codespaces) which allows me to start a virtual machine in the cloud. The difference with the previous virtual machine that automatically launched GAMS is that Codespaces provides a persistent machine with an editor (Visual Studio Code for the Web), a terminal to launch GAMS, and a link to the original repo to push back modifications (contrary to what the gif below may suggest setting up the Codespaces takes about 2 minutes, during which I jump to another project to grade).
 
 ![Editing GAMS files in Codespaces](codespaces.gif)
 
 # How to deal with licensing?
 
-One issue I encountered when developing this approach was GAMS licensing. I will tell you about the solution I adopted, but also about two other possible approaches. My solution is very simple: use GAMS 29.1. These days if you want to try GAMS without buying it, you have to request online a free demo license, but up to GAMS version 29.1 the demo version was shipped with the software and small models could be solved directly after the installation without having to provide a license. For the purpose of this class, where the students have to solve small models and do not use recently-introduced advanced GAMS features, relying on an old version of GAMS is largely sufficient.
+GAMS requires a license to run. But, with [GAMS version 44.0](https://www.gams.com/latest/docs/RN_44.html#g4410_LICENSE), a demo license is included back in the GAMS distribution. It is valid for approximately 5 months, which is enough given the frequent GAMS releases, as long as one uses the latest GAMS distribution. For the purpose of this class, where the students have to solve small models, relying on the demo license [with its limits](https://www.gams.com/latest/docs/UG_License.html#UG_License_Additional_Solver_Limits) is normally sufficient, but this may not be the case for everyone.
 
-If GAMS 29.1 is not recent enough, it is possible to use a license file. I can see at least two approaches. The first would be to store a license file in each repository of assignments and to move it automatically to where GAMS is installed on the virtual machine. Since, for my class, the repositories for exercises are all private repositories, the license would not been shared outside the class and each year, GAMS provides me with a temporary teaching license for my students. For public projects, storing the license file is not an option. In this case, the license can be stored in a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and copied to GAMS folder after the installation.
+If you need to use a license file, I can see at least two approaches. The first would be to store a license file in each repository of assignments and to move it automatically to where GAMS is installed on the virtual machine. Since, for my class, the repositories for exercises are all private repositories, the license would not been shared outside the class and each year, GAMS provides me with a temporary teaching license for my students. For public projects, storing the license file is not an option. In this case, the license can be stored in a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and copied to GAMS folder after the installation.
 
 # Additional benefits
 
